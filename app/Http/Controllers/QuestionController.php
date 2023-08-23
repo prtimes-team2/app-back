@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class FavoriteController extends Controller
+class QuestionController extends Controller
 {
     public function action_index(Request $request){
         try{
