@@ -61,20 +61,18 @@ class UserController extends Controller
             $gender = $request->input('gender') ?? null;
             $user = User::where('line_id', $user_id)->first();
             if ($user) {
-                $user->DisplayName = $DisplayName;
+                if (!is_null($DisplayName)) {$user->DisplayName = $DisplayName;}
+                if (!is_null($ProfileImageUrl)) {$user->ProfileImageUrl = $ProfileImageUrl;}
+                if (!is_null($prefecture)) {$user->prefecture = $prefecture;}
+                if (!is_null($city)) {$user->city = $city;}
+                if (!is_null($birth)) {$user->birth = $birth;}
+                if (!is_null($gender)) {$user->gender = $gender;}
                 $user->save();
             } else {
                 // $user_idに一致するレコードが存在しない場合のエラーハンドリング
                 $res = ['message' => 'Could Not Find User.'];
                 return response()->json($res, 200);
             }
-            if (!is_null($DisplayName)) {$user->DisplayName = $DisplayName;}
-            if (!is_null($ProfileImageUrl)) {$user->ProfileImageUrl = $ProfileImageUrl;}
-            if (!is_null($prefecture)) {$user->prefecture = $prefecture;}
-            if (!is_null($city)) {$user->city = $city;}
-            if (!is_null($birth)) {$user->birth = $birth;}
-            if (!is_null($gender)) {$user->gender = $gender;}
-            $user->save();
             $res = ['message' => 'Successfully Update User Information.'];
             return response()->json($res, 200);
         } catch (\GuzzleHttp\Exception\ClientException $e) {
