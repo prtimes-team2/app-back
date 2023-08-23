@@ -22,18 +22,33 @@ use App\Http\Controllers\TestController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-// ログイン時の情報を全て返す
+
+// 必要なユーザー情報などを一括取得（ログイン時）
 Route::post('/user/login', [UserController::class, 'action_index_post'])->middleware('line.auth');
 
-// ユーザー情報のアップデート
+// ユーザー情報の更新
 Route::put('/user', [UserController::class, 'action_index_put']);
 
+// お気に入りに追加する
 Route::post('/favorite', [FavoriteController::class, 'action_index_post']);
+
+// お気に入りから外す（DBレコードは消さない）
 Route::delete('/favorite', [FavoriteController::class, 'action_index_delete']);
+
+// 質問の投稿
 Route::post('/question', [QuestionController::class, 'action_index_post']);
+
+// 質問の削除
 Route::delete('/question', [QuestionController::class, 'action_index_delete']);
+
+// 新規レポートの取得（タイムラインの更新）
 Route::get('/report', [ReportController::class, 'action_index_get']);
+
+// レポートの投稿
 Route::post('/report', [ReportController::class, 'action_index_post']);
+
+// レポートの削除
 Route::delete('/report', [ReportController::class, 'action_index_delete']);
 
+// テスト（デバック用）
 Route::get('/test', [TestController::class, 'action_index']);

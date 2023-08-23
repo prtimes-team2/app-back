@@ -17,8 +17,9 @@ class LineAuthentication
      */
     public function handle(Request $request, Closure $next)
     {
-        $client = new Client();
         try{
+            $client = new Client();
+
             // POST リクエストから idToken の値を取得
             $idToken = $request->input('idToken');
             
@@ -46,11 +47,11 @@ class LineAuthentication
             }
 
             return $next($request);
-        } catch (\GuzzleHttp\Exception\ClientException $e) {
+        } 
+        catch (\GuzzleHttp\Exception\ClientException $e) {
             $errorResponse = $e->getResponse();
             $errorContent = $errorResponse->getBody()->getContents();
             return response()->json(json_decode($errorContent, true), $errorResponse->getStatusCode());
         }
-        
     }
 }
