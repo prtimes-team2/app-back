@@ -41,8 +41,10 @@ class LineAuthentication
                 //jsonデコード
                 $data = json_decode($responseBody, true);
 
-                // $user_idをリクエストに追加
+                // line情報を$requestに追加
                 $request->merge(['user_id' => $data['sub']]);
+                $request->merge(['DisplayName' => $data['name']]);
+                $request->merge(['ProfileImageUrl' => $data['picture']]);
             }
 
             return $next($request);

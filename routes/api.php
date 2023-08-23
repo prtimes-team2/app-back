@@ -24,9 +24,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 // ログイン時の情報を全て返す
 Route::post('/user/login', [UserController::class, 'action_index_post'])->middleware('line.auth');
-
 // ユーザー情報のアップデート
-Route::put('/user', [UserController::class, 'action_index_put']);
+Route::post('/user', [UserController::class, 'action_index_put'])->middleware('line.auth'); // Route::putではエラーが生じた
 
 Route::post('/favorite', [FavoriteController::class, 'action_index_post']);
 Route::delete('/favorite', [FavoriteController::class, 'action_index_delete']);
