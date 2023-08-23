@@ -8,6 +8,7 @@ use App\Models\User;
 
 class UserController extends Controller
 {
+    // ログイン時の情報を全て返す（/user/login [POST]）
     public function action_index_post(Request $request){
         try{
             // $user_idを取得
@@ -294,14 +295,28 @@ class UserController extends Controller
             ];
 
             return response()->json($res, 200);
-        } catch (\GuzzleHttp\Exception\ClientException $e) {
+        } 
+        catch (\GuzzleHttp\Exception\ClientException $e) {
             $errorResponse = $e->getResponse();
             $errorContent = $errorResponse->getBody()->getContents();
             return response()->json(json_decode($errorContent, true), $errorResponse->getStatusCode());
         }
     }
     
+    // ユーザー情報のアップデート（/user [PUT]）
     public function action_index_put(Request $request){
-        
+        try{
+            // $user_idを取得
+            $user_id = $request->user_id;
+
+            // データベース操作
+
+            return response()->json(['message' => 'Updated User Information.'], 200);
+        } 
+        catch (\GuzzleHttp\Exception\ClientException $e) {
+            $errorResponse = $e->getResponse();
+            $errorContent = $errorResponse->getBody()->getContents();
+            return response()->json(json_decode($errorContent, true), $errorResponse->getStatusCode());
+        }
     }
 }
