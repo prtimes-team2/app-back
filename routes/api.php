@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\TestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,3 +35,5 @@ Route::delete('/question', [QuestionController::class, 'action_index_delete']);
 Route::get('/report', [ReportController::class, 'action_index_get']);
 Route::post('/report', [ReportController::class, 'action_index_post']);
 Route::delete('/report', [ReportController::class, 'action_index_delete']);
+
+Route::get('/test', [TestController::class, 'action_index']);
