@@ -9,7 +9,6 @@ use App\Models\User;
 class UserController extends Controller
 {
     public function action_index_post(Request $request){
-        $user = User::all();
         try{
             // $user_idを返す
             $user_id = $request->user_id;
