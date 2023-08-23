@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('title', 30)->nullable();
             $table->string('content', 300)->nullable();
             $table->string('address', 30)->nullable();
-            $table->float('lat', 4, 16)->nullable();
-            $table->float('lng', 4, 16)->nullable();
+            $table->float('lat')->nullable();
+            $table->float('lng')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
