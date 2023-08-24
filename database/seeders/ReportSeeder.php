@@ -14,6 +14,7 @@ class ReportSeeder extends Seeder
      *
      * @return void
      */
+    /*
     public function run()
     {
         $faker = \Faker\Factory::create();
