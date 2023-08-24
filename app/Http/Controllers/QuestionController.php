@@ -12,6 +12,54 @@ use Illuminate\Support\Facades\DB;
 class QuestionController extends Controller
 {
     /**
+     * 質問の取得（自分のもののみ）
+     * 自分が投稿した質問の取得
+     * /question/self [GET]
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     */
+    public function action_index_getSelf(Request $request){
+        try{
+            // リクエストからuser_id（line_id）を取得
+            $line_id = $request->user_id;
+
+            // 取得したline_idをもとにusersテーブルから対象ユーザーのidを取得
+            $user_id = DB::table('users')->where('line_id', $line_id)->value('id');
+
+            // 取得したprefectureとcityをもとにqustionsテーブルから対象レコードを取得
+            $getQuestions = DB::table('questions')
+                ->where('user_id', $user_id)
+                ->get();
+
+            $questions = [];
+            foreach ($getQuestions as $question) {
+
+                // userテーブルからDisplayNameを取得
+                $displayName = User::find($question->user_id)->DisplayName;
+
+                // userテーブルからDisplayNameを取得
+                $profileImageUrl = User::find($question->user_id)->ProfileImageUrl;
+
+                $newQuestion = [
+                    'question_id' => $question->id,
+                    'displayName' => $displayName,
+                    'profileImageUrl' => $profileImageUrl,
+                    'content' => $question->content,
+                    'created_at' => $question->created_at,
+                ];
+            
+                $questions[] = $newQuestion;
+            }
+
+            return response()->json($questions, 200);
+        }
+        catch (\Throwable $e) {
+            return response()->json(['error' => 'Could not process your request.'], 500);
+        }
+    }
+
+    /**
      * 質問の取得
      * POSTで渡された地元情報をもとにquestionsテーブルを検索して該当するレコードを返す
      * /question [GET]
@@ -19,7 +67,6 @@ class QuestionController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    // 質問の取得（地元、全部、created_at、reward操作）
     public function action_index_get(Request $request){
         try{
             // リクエストからuser_id（line_id）を取得
@@ -82,13 +129,8 @@ class QuestionController extends Controller
 
             return response()->json($questions, 200);
         }
-        // catch (\Throwable $e) {
-        //     return response()->json(['error' => 'Could not process your request.'], 500);
-        // }
-        catch (\GuzzleHttp\Exception\ClientException $e) {
-            $errorResponse = $e->getResponse();
-            $errorContent = $errorResponse->getBody()->getContents();
-            return response()->json(json_decode($errorContent, true), $errorResponse->getStatusCode());
+        catch (\Throwable $e) {
+            return response()->json(['error' => 'Could not process your request.'], 500);
         }
     }
 
