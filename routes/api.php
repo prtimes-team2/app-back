@@ -42,7 +42,7 @@ Route::post('/question', [QuestionController::class, 'action_index_post']);
 Route::delete('/question', [QuestionController::class, 'action_index_delete']);
 
 // 新規レポートの取得（タイムラインの更新）
-Route::get('/report', [ReportController::class, 'action_index_get']);
+Route::get('/report', [ReportController::class, 'action_index_get'])->middleware('line.auth');
 
 // レポートの投稿
 Route::post('/report', [ReportController::class, 'action_index_post'])->middleware('line.auth');
