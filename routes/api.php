@@ -37,6 +37,7 @@ Route::post('/favorite', [FavoriteController::class, 'action_index_post'])->midd
 Route::delete('/favorite', [FavoriteController::class, 'action_index_delete'])->middleware('line.auth');// Route::deleteではエラーが生じた
 
 // 質問の取得
+Route::get('/question', [QuestionController::class, 'action_index_get'])->middleware('line.auth');
 
 // 質問の投稿
 Route::post('/question', [QuestionController::class, 'action_index_post'])->middleware('line.auth');

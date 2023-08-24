@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use DateTime;
+use Faker\Factory as Faker;
 
 class ReportSeeder extends Seeder
 {
@@ -14,6 +15,7 @@ class ReportSeeder extends Seeder
      *
      * @return void
      */
+    
     public function run()
     {
         $faker = \Faker\Factory::create();
