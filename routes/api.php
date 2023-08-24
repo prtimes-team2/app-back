@@ -48,7 +48,7 @@ Route::get('/report', [ReportController::class, 'action_index_get']);
 Route::post('/report', [ReportController::class, 'action_index_post'])->middleware('line.auth');
 
 // レポートの削除
-Route::delete('/report', [ReportController::class, 'action_index_delete']);
+Route::delete('/report', [ReportController::class, 'action_index_delete'])->middleware('line.auth');
 
 // テスト（デバック用）
 Route::get('/test', [TestController::class, 'action_index']);
