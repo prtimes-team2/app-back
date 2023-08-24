@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Report;
+use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
@@ -12,7 +14,7 @@ class ReportController extends Controller
      * /report [GET]
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\JsonResponse JSON形式の新規レポート情報
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function action_index_get(Request $request){
         try{
@@ -31,11 +33,21 @@ class ReportController extends Controller
      * /report [POST]
      * 
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\JsonResponse JSON形式のHTTPステータスコード
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function action_index_post(Request $request){
         try{
+            // データベースに登録
+            $line_id = $request->user_id;
 
+            $report = new Report();
+            $report->user_id = DB::table('users')->where('line_id', $line_id)->value('id');
+            $report->title = $request->title;
+            $report->content = $request->content;
+            $report->address = $request->address;
+            $report->lat = $request->lat;
+            $report->lng = $request->lng;
+            $report->save();
 
             return response()->json(['message' => 'Successfully Submitted The Report.'], 200);
         }
@@ -52,7 +64,7 @@ class ReportController extends Controller
      * /report [DELETE]
      * 
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\JsonResponse JSON形式のHTTPステータスコード
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function action_index_delete(Request $request){
         try{

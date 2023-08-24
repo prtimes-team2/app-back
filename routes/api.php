@@ -45,7 +45,7 @@ Route::delete('/question', [QuestionController::class, 'action_index_delete']);
 Route::get('/report', [ReportController::class, 'action_index_get']);
 
 // レポートの投稿
-Route::post('/report', [ReportController::class, 'action_index_post']);
+Route::post('/report', [ReportController::class, 'action_index_post'])->middleware('line.auth');
 
 // レポートの削除
 Route::delete('/report', [ReportController::class, 'action_index_delete']);
