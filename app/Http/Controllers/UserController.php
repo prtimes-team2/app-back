@@ -61,6 +61,7 @@ class UserController extends Controller
                     'imageUrls' => $imageUrls,
                     'tags' => $tags,
                     'author' => $authors,
+                    'user_id' => $author_id,
                 ];
         
                 $newReports[] = $newReport;
@@ -138,6 +139,7 @@ class UserController extends Controller
                     'imageUrls' => $favorite_imageUrls,
                     'tags' => $favorite_tags,
                     'author' => $favorite_authors,
+                    'user_id' => $favorite_author_id,
                 ];
         
                 $newFavoriteReports[] = $newFavoriteReport;
@@ -180,6 +182,7 @@ class UserController extends Controller
                     'imageUrls' => $imageUrls,
                     'tags' => $tags,
                     'author' => $authors,
+                    'user_id' => $user_id,
                 ];
         
                 $newMyReports[] = $newMyReport;
