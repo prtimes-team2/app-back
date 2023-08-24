@@ -34,9 +34,12 @@ Route::put('/user', [UserController::class, 'action_index_put'])->middleware('li
 Route::post('/favorite', [FavoriteController::class, 'action_index_post'])->middleware('line.auth');
 
 // お気に入りから外す（DBレコードは消さない）
-Route::delete('/favorite', [FavoriteController::class, 'action_index_delete'])->middleware('line.auth');// Route::deleteではエラーが生じた
+Route::delete('/favorite', [FavoriteController::class, 'action_index_delete'])->middleware('line.auth');
 
-// 質問の取得
+// 質問の取得（自分が投稿したもののみ）
+Route::get('/question/self', [QuestionController::class, 'action_index_getSelf'])->middleware('line.auth');
+
+// 質問の取得（自分が投稿したものを除く）
 Route::get('/question', [QuestionController::class, 'action_index_get'])->middleware('line.auth');
 
 // 質問の投稿
