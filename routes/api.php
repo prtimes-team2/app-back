@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\TestController;
 
 /*
@@ -35,11 +36,19 @@ Route::post('/favorite', [FavoriteController::class, 'action_index_post'])->midd
 // お気に入りから外す（DBレコードは消さない）
 Route::delete('/favorite', [FavoriteController::class, 'action_index_delete'])->middleware('line.auth');// Route::deleteではエラーが生じた
 
+// 質問の取得
+
 // 質問の投稿
 Route::post('/question', [QuestionController::class, 'action_index_post'])->middleware('line.auth');
 
 // 質問の削除
-Route::delete('/question', [QuestionController::class, 'action_index_delete']);
+Route::delete('/question', [QuestionController::class, 'action_index_delete'])->middleware('line.auth');
+
+// 回答の取得
+Route::get('/answer', [AnswerController::class, 'action_index_get'])->middleware('line.auth');
+
+// 回答の投稿
+Route::post('/answer', [AnswerController::class, 'action_index_post'])->middleware('line.auth');
 
 // 新規レポートの取得（タイムラインの更新）
 Route::get('/report', [ReportController::class, 'action_index_get'])->middleware('line.auth');
