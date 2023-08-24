@@ -36,6 +36,9 @@ class ReportController extends Controller
 
                 // userテーブルからDisplayNameを取得
                 $author = User::find($report->user_id)->value('DisplayName');
+
+                // userテーブルからDisplayNameを取得
+                $user_id = User::find($report->user_id)->value('line_id');
             
                 // imageurlsテーブルからレコードを取得
                 $imageUrls = DB::table('imageurls')
@@ -60,6 +63,7 @@ class ReportController extends Controller
                     'created_at' => $report->created_at,
                     'updated_at' => $report->updated_at,
                     'author' => $author,
+                    'user_id' => $user_id,
                     'imageUrls' => $imageUrls,
                     'tags' => $tags,
                 ];
