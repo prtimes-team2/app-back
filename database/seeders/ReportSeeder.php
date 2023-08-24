@@ -14,7 +14,7 @@ class ReportSeeder extends Seeder
      *
      * @return void
      */
-    /*
+    
     public function run()
     {
         $faker = \Faker\Factory::create();
@@ -194,5 +194,5 @@ class ReportSeeder extends Seeder
                 ]);
             }
         }
-    }*/
+    }
 }
