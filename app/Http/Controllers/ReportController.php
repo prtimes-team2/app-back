@@ -166,7 +166,7 @@ class ReportController extends Controller
             return response()->json(['message' => 'Successfully deleted the report.'], 200);
         } 
         catch (\Throwable $e) {
-            return response()->json(['error' => 'Could not process your request.', '$report'=>$report_id], 500);
+            return response()->json(['error' => 'Could not process your request.'], 500);
         }
     }
 }
