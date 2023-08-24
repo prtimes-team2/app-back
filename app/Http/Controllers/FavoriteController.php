@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Favorite;
 use App\Models\User;
+use App\Models\Coinlog;
+use App\Models\Report;
 
 class FavoriteController extends Controller
 {
@@ -25,6 +27,13 @@ class FavoriteController extends Controller
                 $favorite->report_id = $report_id;
                 $favorite->isFavorite = true;
                 $favorite->save();
+                
+                // お気に入りされた投稿の投稿主にコインを付与
+                $author_id = Report::where('id', $report_id)->first()->user_id;
+                $coinlog = new Coinlog();
+                $coinlog->user_id = $author_id;
+                $coinlog->amount = 3;
+                $coinlog->save();
                 $res = ['message' => 'Successfully Create Favorite Information.'];
             }
             return response()->json($res, 200);
