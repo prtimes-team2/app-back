@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\DB;
 
 class QuestionController extends Controller
 {
+    // 質問の取得（地元、全部、created_at、reward操作）
+
+
     /**
      * 質問の投稿
      * POSTで渡された質問情報をquestionsテーブルに登録
