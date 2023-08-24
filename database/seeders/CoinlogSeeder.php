@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use DateTime;
+use App\Models\Coinlog;
 
 class CoinlogSeeder extends Seeder
 {
@@ -16,20 +17,25 @@ class CoinlogSeeder extends Seeder
      */
     public function run()
     {
-        /*DB::table('coinlogs')->insert([
+        Coinlog::chunk(100, function ($records) {//チャンクごとにまとめて削除，すべてのレコードを削除
+            foreach ($records as $record) {
+                $record->delete();
+            }
+        });
+        DB::table('coinlogs')->insert([
             'id' => 1,
             'user_id' => 1,
             'amount' => 1000,
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
-        ]);*/
-        /*DB::table('coinlogs')->insert([
+        ]);
+        DB::table('coinlogs')->insert([
             'id' => 2,
             'user_id' => 1,
             'amount' => -300,
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
-        ]);*/
+        ]);
         DB::table('coinlogs')->insert([
             'id' => 3,
             'user_id' => 1,
