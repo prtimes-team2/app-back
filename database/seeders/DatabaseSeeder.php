@@ -22,5 +22,7 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call(UserSeeder::class);
         $this->call(ReportSeeder::class);
+        $this->call(CoinlogSeeder::class);
+        $this->call(TagSeeder::class);
     }
 }
