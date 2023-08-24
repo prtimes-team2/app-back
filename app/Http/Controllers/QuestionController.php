@@ -57,11 +57,18 @@ class QuestionController extends Controller
      */
     public function action_index_delete(Request $request){
         try{
-            return response()->json([], 200);
-        } catch (\GuzzleHttp\Exception\ClientException $e) {
-            $errorResponse = $e->getResponse();
-            $errorContent = $errorResponse->getBody()->getContents();
-            return response()->json(json_decode($errorContent, true), $errorResponse->getStatusCode());
+            // クエリパラメータからquestionIdを取得
+            $question_id = $request->query('questionId');
+
+            // データベースから削除
+            $question = Question::find((int)$question_id);
+            $question->answers()->delete();
+            $question->delete();
+
+            return response()->json(['message' => 'Successfully deleted the question.'], 200);
+        } 
+        catch (\Throwable $e) {
+            return response()->json(['error' => 'Could not process your request.'], 500);
         }
     }
 }
