@@ -26,7 +26,6 @@ class UserController extends Controller
             $getReports = Report::orderBy('created_at', 'desc')
                 ->limit(20)
                 ->get();
-            $newReports = [];
             foreach ($getReports as $report) {
                 $report_id = $report->id;
                 $author_id = $report->user_id;
@@ -69,29 +68,16 @@ class UserController extends Controller
             }
             // コインログを取得
             $getCoinlogs = Coinlog::orderBy('created_at', 'desc')
+                ->where('user_id', $user_id)
                 ->get();
-            $newCoinlogs = [];
             foreach ($getCoinlogs as $coinlog) {
-
-                // usersテーブルからレコードを取得
-                $authors = DB::table('users')
-                    ->where('id', $user_id)
-                    ->pluck('DisplayName');
-            
                 $newCoinlog = [
                     'id' => $coinlog->id,
-                    'title' => $report->title,
-                    'content' => $report->content,
-                    'address' => $report->address,
-                    'lat' => $report->lat,
-                    'lng' => $report->lng,
-                    'created_at' => $report->created_at,
-                    'updated_at' => $report->updated_at,
-                    'imageUrls' => $imageUrls,
-                    'tags' => $tags,
-                    'author' => $authors,
+                    'user_id' => $coinlog->user_id,
+                    'amount' => $coinlog->amount,
+                    'created_at' => $coinlog->created_at,
+                    'updated_at' => $coinlog->updated_at,
                 ];
-        
                 $newCoinlogs[] = $newCoinlog;
             }
             //$favorite_reportIds =  $reports->pluck('user_id');
@@ -100,7 +86,6 @@ class UserController extends Controller
                 ->where('isFavorite', 1)
                 ->get();
             // dd($getFavorites);
-            $newFavorites = [];
             foreach ($getFavorites as $favorite) {
                 $favorite_report_id = $favorite->report_id;
                 $favorite_report = Report::orderBy('created_at', 'desc')
@@ -150,7 +135,6 @@ class UserController extends Controller
             $getMyReports = Report::orderBy('created_at', 'desc')
                 ->where('user_id', $user_id)
                 ->get();
-            $newMyReports = [];
             foreach ($getMyReports as $myreport) {
                 $myreport_id = $myreport->id;
 
