@@ -95,8 +95,9 @@ class UserController extends Controller
             //$favorite_reportIds =  $reports->pluck('user_id');
             // favorite中のレポートを取得
             $getFavorites = Favorite::orderBy('created_at', 'desc')
-                ->where('user_id', $user_id)
+                ->where('isFavorite', 1)
                 ->get();
+            // dd($getFavorites);
             $newFavorites = [];
             foreach ($getFavorites as $favorite) {
                 $favorite_report_id = $favorite->report_id;
@@ -198,10 +199,10 @@ class UserController extends Controller
                         'updated_at' => $user->updated_at,
                         'deleted_at' => $user->deleted_at,
                     ],
-                    'Reports' => $newReports,
-                    'Coinlogs' => $newCoinlogs,
-                    'FavoriteReports' => $newFavoriteReports,
-                    'MyReports' => $newMyReports
+                    'Reports' => $newReports ?? null,
+                    'Coinlogs' => $newCoinlogs ?? null,
+                    'FavoriteReports' => $newFavoriteReports ?? null,
+                    'MyReports' => $newMyReports ?? null,
                 ]; 
             } else {
                 $user = new User();
