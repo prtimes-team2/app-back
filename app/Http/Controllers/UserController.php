@@ -225,6 +225,7 @@ class UserController extends Controller
         try{
             $user_id = $request->user_id;
             // ?? nullは$request->input('hogehoge')が存在しなかった場合nullを代入する
+            // queryパラメータはinput()でも取得できる
             $DisplayName = $request->input('DisplayName') ?? null;
             $ProfileImageUrl = $request->input('ProfileImageUrl') ?? null;
             $prefecture = $request->input('prefecture') ?? null;

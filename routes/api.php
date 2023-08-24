@@ -27,28 +27,28 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/user/login', [UserController::class, 'action_index_post'])->middleware('line.auth');
 
 // ユーザー情報のアップデート
-Route::post('/user', [UserController::class, 'action_index_put'])->middleware('line.auth'); // Route::putではエラーが生じた
+Route::put('/user', [UserController::class, 'action_index_put'])->middleware('line.auth');
 
 // お気に入りに追加する
 Route::post('/favorite', [FavoriteController::class, 'action_index_post'])->middleware('line.auth');
 
 // お気に入りから外す（DBレコードは消さない）
-Route::post('/favorite/delete', [FavoriteController::class, 'action_index_delete'])->middleware('line.auth');// Route::deleteではエラーが生じた
+Route::delete('/favorite', [FavoriteController::class, 'action_index_delete'])->middleware('line.auth');// Route::deleteではエラーが生じた
 
 // 質問の投稿
-Route::post('/question', [QuestionController::class, 'action_index_post']);
+Route::post('/question', [QuestionController::class, 'action_index_post'])->middleware('line.auth');
 
 // 質問の削除
 Route::delete('/question', [QuestionController::class, 'action_index_delete']);
 
 // 新規レポートの取得（タイムラインの更新）
-Route::get('/report', [ReportController::class, 'action_index_get']);
+Route::get('/report', [ReportController::class, 'action_index_get'])->middleware('line.auth');
 
 // レポートの投稿
-Route::post('/report', [ReportController::class, 'action_index_post']);
+Route::post('/report', [ReportController::class, 'action_index_post'])->middleware('line.auth');
 
 // レポートの削除
-Route::delete('/report', [ReportController::class, 'action_index_delete']);
+Route::delete('/report', [ReportController::class, 'action_index_delete'])->middleware('line.auth');
 
 // テスト（デバック用）
 Route::get('/test', [TestController::class, 'action_index']);
