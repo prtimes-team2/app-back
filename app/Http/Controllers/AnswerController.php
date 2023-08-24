@@ -103,7 +103,7 @@ class AnswerController extends Controller
                 $coinlog->amount = $reward;
                 $coinlog->save();
             }
-            return response()->json(['amount' => $reward], 200);
+            return response()->json(['amount' => $coinlog->amount], 200);
 
             
         }
