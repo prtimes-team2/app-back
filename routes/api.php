@@ -26,14 +26,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // 必要なユーザー情報などを一括取得（ログイン時）
 Route::post('/user/login', [UserController::class, 'action_index_post'])->middleware('line.auth');
 
-// ユーザー情報の更新
-Route::put('/user', [UserController::class, 'action_index_put']);
+// ユーザー情報のアップデート
+Route::put('/user', [UserController::class, 'action_index_put'])->middleware('line.auth');
 
 // お気に入りに追加する
-Route::post('/favorite', [FavoriteController::class, 'action_index_post']);
+Route::post('/favorite', [FavoriteController::class, 'action_index_post'])->middleware('line.auth');
 
 // お気に入りから外す（DBレコードは消さない）
-Route::delete('/favorite', [FavoriteController::class, 'action_index_delete']);
+Route::delete('/favorite', [FavoriteController::class, 'action_index_delete'])->middleware('line.auth');// Route::deleteではエラーが生じた
 
 // 質問の投稿
 Route::post('/question', [QuestionController::class, 'action_index_post']);
