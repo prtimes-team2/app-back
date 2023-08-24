@@ -30,6 +30,7 @@ class UserController extends Controller
             foreach ($getReports as $report) {
                 $report_id = $report->id;
                 $author_id = $report->user_id;
+                $author_line_id = User::where('id', $author_id)->first()->line_id;
 
                 // usersテーブルからレコードを取得
                 $authors = DB::table('users')
@@ -45,7 +46,7 @@ class UserController extends Controller
                 // report_tag中間テーブルからレコードを取得
                 $tags = DB::table('report_tag')
                     ->join('tags', 'report_tag.tag_id', '=', 'tags.id')
-                    ->where('report_tag.report_id', $report_id)//->get();
+                    ->where('report_tag.report_id', $report_id)
                     ->pluck('tags.name')
                     ->toArray();
             
@@ -61,7 +62,7 @@ class UserController extends Controller
                     'imageUrls' => $imageUrls,
                     'tags' => $tags,
                     'author' => $authors,
-                    'user_id' => $author_id,
+                    'user_id' => $author_line_id,// authorのline_id
                 ];
         
                 $newReports[] = $newReport;
@@ -108,6 +109,7 @@ class UserController extends Controller
                 //dd($favorite_report->first()->user_id);
                 
                 $favorite_author_id = $favorite_report->first()->user_id;
+                $favorite_author_line_id = User::where('id', $favorite_author_id)->first()->line_id;
                 
                 // usersテーブルからレコードを取得
                 $favorite_authors = DB::table('users')
@@ -139,7 +141,7 @@ class UserController extends Controller
                     'imageUrls' => $favorite_imageUrls,
                     'tags' => $favorite_tags,
                     'author' => $favorite_authors,
-                    'user_id' => $favorite_author_id,
+                    'user_id' => $favorite_author_line_id,
                 ];
         
                 $newFavoriteReports[] = $newFavoriteReport;
@@ -182,7 +184,7 @@ class UserController extends Controller
                     'imageUrls' => $imageUrls,
                     'tags' => $tags,
                     'author' => $authors,
-                    'user_id' => $user_id,
+                    'user_id' => $line_id,
                 ];
         
                 $newMyReports[] = $newMyReport;
@@ -202,10 +204,10 @@ class UserController extends Controller
                         'updated_at' => $user->updated_at,
                         'deleted_at' => $user->deleted_at,
                     ],
-                    'Reports' => $newReports ?? null,
-                    'Coinlogs' => $newCoinlogs ?? null,
-                    'FavoriteReports' => $newFavoriteReports ?? null,
-                    'MyReports' => $newMyReports ?? null,
+                    'Reports' => $newReports ?? json_decode('[]'),
+                    'Coinlogs' => $newCoinlogs ?? json_decode('[]'),
+                    'FavoriteReports' => $newFavoriteReports ?? json_decode('[]'),
+                    'MyReports' => $newMyReports ?? json_decode('[]'),
                 ]; 
             } else {
                 $user = new User();
