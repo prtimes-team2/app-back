@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Coinlog;
 use App\Models\Imageurl;
 use Illuminate\Http\Request;
 use App\Models\Report;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
@@ -31,6 +33,9 @@ class ReportController extends Controller
             $newReports = [];
             foreach ($getReports as $report) {
                 $report_id = $report->id;
+
+                // userテーブルからDisplayNameを取得
+                $author = User::find($report->user_id)->value('DisplayName');
             
                 // imageurlsテーブルからレコードを取得
                 $imageUrls = DB::table('imageurls')
@@ -44,7 +49,7 @@ class ReportController extends Controller
                     ->where('report_tag.report_id', $report_id)
                     ->pluck('tags.name')
                     ->toArray();
-            
+
                 $newReport = [
                     'id' => $report->id,
                     'title' => $report->title,
@@ -54,6 +59,7 @@ class ReportController extends Controller
                     'lng' => $report->lng,
                     'created_at' => $report->created_at,
                     'updated_at' => $report->updated_at,
+                    'author' => $author,
                     'imageUrls' => $imageUrls,
                     'tags' => $tags,
                 ];
@@ -121,9 +127,17 @@ class ReportController extends Controller
                 $imageUrl->ImageUrl = $url;
                 $imageUrl->save();
             }
+
+            // coinlogsテーブル
+            $coinlog = new Coinlog();
+            $coinlog->user_id = $user_id;
+            $coinlog->amount = 5;
+            $coinlog->save();
+
+
             // ----------------------------------------------------
 
-            return response()->json(['message' => 'Successfully Submitted The Report.'], 200);
+            return response()->json(['amount' => 5], 200);
         }
         catch (\Throwable $e) {
             return response()->json(['error' => 'Could not process your request.'], 500);
