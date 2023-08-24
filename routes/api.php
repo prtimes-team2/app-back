@@ -30,10 +30,10 @@ Route::post('/user/login', [UserController::class, 'action_index_post'])->middle
 Route::post('/user', [UserController::class, 'action_index_put'])->middleware('line.auth'); // Route::putではエラーが生じた
 
 // お気に入りに追加する
-Route::post('/favorite', [FavoriteController::class, 'action_index_post']);
+Route::post('/favorite', [FavoriteController::class, 'action_index_post'])->middleware('line.auth');
 
 // お気に入りから外す（DBレコードは消さない）
-Route::delete('/favorite', [FavoriteController::class, 'action_index_delete']);
+Route::post('/favorite/delete', [FavoriteController::class, 'action_index_delete'])->middleware('line.auth');// Route::deleteではエラーが生じた
 
 // 質問の投稿
 Route::post('/question', [QuestionController::class, 'action_index_post']);
