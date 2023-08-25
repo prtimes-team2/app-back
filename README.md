@@ -6,7 +6,7 @@ https://drive.google.com/file/d/1k8K-E8qVaPaBCn0lcGqjSQL-lYh7mWpp/view?usp=shari
 - `/favorite`
     - POST
         - `{
-        token:xxxxxxx ,reportId:yyyyy
+        idToken:xxxxxxx ,reportId:yyyyy
         }`
     - そのユーザーがすでにFavoriteしてるかどうか判定
     - booleanの変更(true)
@@ -18,7 +18,7 @@ https://drive.google.com/file/d/1k8K-E8qVaPaBCn0lcGqjSQL-lYh7mWpp/view?usp=shari
 - `/favorite`
     - DELETE
         - `{
-        token:xxxxxxx ,reportId:yyyyy
+        idToken:xxxxxxx ,reportId:yyyyy
         }`
     - DBをレコードを消すわけではなく、booleanを変更する（false）
     - レスポンス
@@ -28,7 +28,7 @@ https://drive.google.com/file/d/1k8K-E8qVaPaBCn0lcGqjSQL-lYh7mWpp/view?usp=shari
 - `/question`
     - POST
         - `{
-        token:xxxxxxx ,...QUESTION
+        idToken:xxxxxxx ,...QUESTION
         }`
     - レスポンス
         - `{}`
@@ -37,7 +37,7 @@ https://drive.google.com/file/d/1k8K-E8qVaPaBCn0lcGqjSQL-lYh7mWpp/view?usp=shari
 - `/question`
     - DELETE
         - `{
-        token:xxxxxxx ,questionId:xxxxx
+        idToken:xxxxxxx ,questionId:xxxxx
         }`
     - レスポンス
         - `{}`
@@ -47,7 +47,7 @@ https://drive.google.com/file/d/1k8K-E8qVaPaBCn0lcGqjSQL-lYh7mWpp/view?usp=shari
     - レポートを投稿する
     - POST
         - `{
-        token:xxxxxxx ,...REPORT
+        idToken:xxxxxxx ,...REPORT
         }`
     - レスポンス
         - `{}`
@@ -57,7 +57,7 @@ https://drive.google.com/file/d/1k8K-E8qVaPaBCn0lcGqjSQL-lYh7mWpp/view?usp=shari
     - レポートの削除
     -  DELETE（クエリパラメータに乗せて）
         - `{
-        token:xxxxxxx ,reportId:zzzzzzz
+        idToken:xxxxxxx ,reportId:zzzzzzz
         }`
     - レスポンス
         - `{}`
@@ -66,7 +66,7 @@ https://drive.google.com/file/d/1k8K-E8qVaPaBCn0lcGqjSQL-lYh7mWpp/view?usp=shari
 - `/user/login`
     - ログイン時の情報を全て返す
         -`{
-        token:xxxxxxx
+        idToken:xxxxxxx
         }`
     - レスポンス
         - `{...User,
@@ -85,10 +85,9 @@ https://drive.google.com/file/d/1k8K-E8qVaPaBCn0lcGqjSQL-lYh7mWpp/view?usp=shari
 
 
 - `/user`
-    -~~PUT~~→POST
+    - PUT(クエリパラメータで)
         - `{
-        token:xxxxxxx ,
-        name:xxxx,
+        idToken:xxxxxxx ,DisplayName:zzzzzzz
         }`
     - ユーザー情報のアップデート
 ##
