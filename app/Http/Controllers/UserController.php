@@ -84,6 +84,7 @@ class UserController extends Controller
                 //$favorite_reportIds =  $reports->pluck('user_id');
                 // favorite中のレポートを取得
                 $getFavorites = Favorite::orderBy('created_at', 'desc')
+                    ->where('user_id', $user_id)
                     ->where('isFavorite', 1)
                     ->get();
                 // dd($getFavorites);
