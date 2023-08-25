@@ -2,6 +2,96 @@
 ## ER図
 https://drive.google.com/file/d/1k8K-E8qVaPaBCn0lcGqjSQL-lYh7mWpp/view?usp=sharing
 ## 
+## エンドポイント
+- `/favorite`
+    - POST
+        - `{
+        token:xxxxxxx ,reportId:yyyyy
+        }`
+    - そのユーザーがすでにFavoriteしてるかどうか判定
+    - booleanの変更(true)
+    - なかった場合は追加する(booleanはtrue)
+    - レスポンス
+        - `{}`
+        - 200
+
+- `/favorite`
+    - DELETE
+        - `{
+        token:xxxxxxx ,reportId:yyyyy
+        }`
+    - DBをレコードを消すわけではなく、booleanを変更する（false）
+    - レスポンス
+        - `{}`
+        - 200
+
+- `/question`
+    - POST
+        - `{
+        token:xxxxxxx ,...QUESTION
+        }`
+    - レスポンス
+        - `{}`
+        - 200
+
+- `/question`
+    - DELETE
+        - `{
+        token:xxxxxxx ,questionId:xxxxx
+        }`
+    - レスポンス
+        - `{}`
+        - 200
+
+- `/report`
+    - レポートを投稿する
+    - POST
+        - `{
+        token:xxxxxxx ,...REPORT
+        }`
+    - レスポンス
+        - `{}`
+        - 200
+
+- `/report`
+    - レポートの削除
+    -  DELETE（クエリパラメータに乗せて）
+        - `{
+        token:xxxxxxx ,reportId:zzzzzzz
+        }`
+    - レスポンス
+        - `{}`
+        - 200
+
+- `/user/login`
+    - ログイン時の情報を全て返す
+        -`{
+        token:xxxxxxx
+        }`
+    - レスポンス
+        - `{...User,
+            ...Report(地元で検索して最大20件),
+            ...CoinLog(自分のもの),
+            ...Favorite(IDだけではなくコンテンツも含む),
+            ...Question(自分に当てられたもの = 地元)
+            }`
+    - usersテーブルに一致するuser_idが存在しなかった場合
+
+- `/report?token=xxxxxxxx&address=xxxxx
+    - GET
+    - 新規レポートの最新更新
+    - レスポンス
+        - `{...Report(最新の20件)}`
+
+
+- `/user`
+    -~~PUT~~→POST
+        - `{
+        token:xxxxxxx ,
+        name:xxxx,
+        }`
+    - ユーザー情報のアップデート
+##
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
