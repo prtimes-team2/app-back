@@ -10,7 +10,7 @@ class Report extends Model
     use HasFactory;
 
     public function users(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
     public function favorites(){
         return $this->hasMany(Favorite::class);
