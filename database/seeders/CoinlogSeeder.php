@@ -22,7 +22,7 @@ class CoinlogSeeder extends Seeder
                 $record->delete();
             }
         });
-        DB::table('coinlogs')->insert([
+        DB::table('coinlogs')->insert([//
             'id' => 1,
             'user_id' => 1,
             'amount' => 1000,
