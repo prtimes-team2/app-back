@@ -22,34 +22,15 @@ class UserController extends Controller
             $user = User::where('line_id', $line_id)->first();
             if ($user) {
                 $user_id = $user->id;
-                
+
                 // 地元の最新レポートを最大20件を取得
-                $getReports = Report::orderBy('created_at', 'desc')
+                $getReports = Report::with(['users', 'imageurls', 'tags'])
+                    ->orderBy('created_at', 'desc')
                     ->limit(20)
                     ->get();
+                //dd($getReports);
                 foreach ($getReports as $report) {
-                    $report_id = $report->id;
-                    $author_id = $report->user_id;
-                    $author_line_id = User::where('id', $author_id)->first()->line_id;
-
-                    // usersテーブルからレコードを取得
-                    $authors = DB::table('users')
-                        ->where('id', $author_id)
-                        ->pluck('DisplayName');
-                
-                    // imageurlsテーブルからレコードを取得
-                    $imageUrls = DB::table('imageurls')
-                        ->where('report_id', $report_id)
-                        ->pluck('imageUrl')
-                        ->toArray();
-                
-                    // report_tag中間テーブルからレコードを取得
-                    $tags = DB::table('report_tag')
-                        ->join('tags', 'report_tag.tag_id', '=', 'tags.id')
-                        ->where('report_tag.report_id', $report_id)
-                        ->pluck('tags.name')
-                        ->toArray();
-                
+                    //dd($report->users);
                     $newReport = [
                         'id' => $report->id,
                         'title' => $report->title,
@@ -59,12 +40,11 @@ class UserController extends Controller
                         'lng' => $report->lng,
                         'created_at' => $report->created_at,
                         'updated_at' => $report->updated_at,
-                        'imageUrls' => $imageUrls,
-                        'tags' => $tags,
-                        'author' => $authors,
-                        'user_id' => $author_line_id,// authorのline_id
+                        'imageUrls' => $report->imageurls->pluck('ImageUrl')->toArray(),
+                        'tags' => $report->tags->pluck('name'),
+                        'author' => $report->users->DisplayName,// ImageUrlとは違ってpluck()なしで指定できた
+                        'user_id' => $report->users->line_id,// authorのline_id
                     ];
-            
                     $newReports[] = $newReport;
                 }
                 // コインログを取得
@@ -81,83 +61,36 @@ class UserController extends Controller
                     ];
                     $newCoinlogs[] = $newCoinlog;
                 }
-                //$favorite_reportIds =  $reports->pluck('user_id');
-                // favorite中のレポートを取得
-                $getFavorites = Favorite::orderBy('created_at', 'desc')
+                // favorite済みののレポートを取得
+                $getFavoriteReports = Favorite::with(['reports', 'reports.users', 'reports.imageurls', 'reports.tags'])
+                    ->orderBy('created_at', 'desc')
                     ->where('user_id', $user_id)
                     ->where('isFavorite', 1)
                     ->get();
-                // dd($getFavorites);
-                foreach ($getFavorites as $favorite) {
-                    $favorite_report_id = $favorite->report_id;
-                    $favorite_report = Report::orderBy('created_at', 'desc')
-                    ->where('id', $favorite_report_id)
-                    ->get();
-                    //dd($favorite_report->first()->user_id);
-                    
-                    $favorite_author_id = $favorite_report->first()->user_id;
-                    $favorite_author_line_id = User::where('id', $favorite_author_id)->first()->line_id;
-                    
-                    // usersテーブルからレコードを取得
-                    $favorite_authors = DB::table('users')
-                        ->where('id', $favorite_author_id)
-                        ->pluck('DisplayName');
-                
-                    // imageurlsテーブルからレコードを取得
-                    $favorite_imageUrls = DB::table('imageurls')
-                        ->where('report_id', $favorite_report_id)
-                        ->pluck('imageUrl')
-                        ->toArray();
-                
-                    // report_tag中間テーブルからレコードを取得
-                    $favorite_tags = DB::table('report_tag')
-                        ->join('tags', 'report_tag.tag_id', '=', 'tags.id')
-                        ->where('report_tag.report_id', $favorite_report_id)//->get();
-                        ->pluck('tags.name')
-                        ->toArray();
-                
+                //dd($getFavorites);
+                foreach ($getFavoriteReports as $favorite_report) {
                     $newFavoriteReport = [
-                        'id' => $favorite_report->first()->id,
-                        'title' => $favorite_report->first()->title,
-                        'content' => $favorite_report->first()->content,
-                        'address' => $favorite_report->first()->address,
-                        'lat' => $favorite_report->first()->lat,
-                        'lng' => $favorite_report->first()->lng,
-                        'created_at' => $favorite_report->first()->created_at,
-                        'updated_at' => $favorite_report->first()->updated_at,
-                        'imageUrls' => $favorite_imageUrls,
-                        'tags' => $favorite_tags,
-                        'author' => $favorite_authors,
-                        'user_id' => $favorite_author_line_id,
+                        'id' => $favorite_report->reports->id,
+                        'title' => $favorite_report->reports->title,
+                        'content' => $favorite_report->reports->content,
+                        'address' => $favorite_report->reports->address,
+                        'lat' => $favorite_report->reports->lat,
+                        'lng' => $favorite_report->reports->lng,
+                        'created_at' => $favorite_report->reports->created_at,
+                        'updated_at' => $favorite_report->reports->updated_at,
+                        'imageUrls' => $favorite_report->imageurls ? $favorite_report->imageurls->pluck('ImageUrl')->toArray() : [],
+                        'tags' => $favorite_report->tags ? $favorite_report->tags->pluck('name') : [],
+                        'author' => $favorite_report->users->DisplayName,
+                        'user_id' => $favorite_report->users->line_id, //authorのline_id
                     ];
-            
                     $newFavoriteReports[] = $newFavoriteReport;
                 }
                 // 自分が書いたレポートを取得
-                $getMyReports = Report::orderBy('created_at', 'desc')
+                $getMyReports = Report::with(['users', 'imageurls', 'tags'])
+                    ->orderBy('created_at', 'desc')
                     ->where('user_id', $user_id)
                     ->get();
                 foreach ($getMyReports as $myreport) {
-                    $myreport_id = $myreport->id;
-
-                    // usersテーブルからレコードを取得
-                    $authors = DB::table('users')
-                        ->where('id', $user_id)
-                        ->pluck('DisplayName');
-                
-                    // imageurlsテーブルからレコードを取得
-                    $imageUrls = DB::table('imageurls')
-                        ->where('report_id', $myreport_id)
-                        ->pluck('imageUrl')
-                        ->toArray();
-                
-                    // report_tag中間テーブルからレコードを取得
-                    $tags = DB::table('report_tag')
-                        ->join('tags', 'report_tag.tag_id', '=', 'tags.id')
-                        ->where('report_tag.report_id', $myreport_id)//->get();
-                        ->pluck('tags.name')
-                        ->toArray();
-                
                     $newMyReport = [
                         'id' => $myreport->id,
                         'title' => $myreport->title,
@@ -167,12 +100,11 @@ class UserController extends Controller
                         'lng' => $myreport->lng,
                         'created_at' => $myreport->created_at,
                         'updated_at' => $myreport->updated_at,
-                        'imageUrls' => $imageUrls,
-                        'tags' => $tags,
-                        'author' => $authors,
-                        'user_id' => $line_id,
+                        'imageUrls' => $myreport->imageurls->pluck('ImageUrl')->toArray(),
+                        'tags' => $myreport->tags->pluck('name'),
+                        'author' => $myreport->users->DisplayName,
+                        'user_id' => $myreport->users->line_id,
                     ];
-            
                     $newMyReports[] = $newMyReport;
                 }
                     $res = [

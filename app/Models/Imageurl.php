@@ -10,6 +10,6 @@ class Imageurl extends Model
     use HasFactory;
 
     public function reports(){
-        return $this->belongsTo(Report::class);
+        return $this->belongsTo(Report::class, 'report_id');
     }
 }
