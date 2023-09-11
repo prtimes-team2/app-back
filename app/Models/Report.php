@@ -21,4 +21,14 @@ class Report extends Model
     public function tags(){
         return $this->belongsToMany(Tag::class);
     }
+
+    public static function getLatest($address)
+    {
+        return self::query()
+            ->where('address', $address)
+            ->orderBy('created_at', 'desc')
+            ->with(['users', 'imageurls', 'tags']) // eager loading
+            ->limit(20)
+            ->get();
+    }
 }
